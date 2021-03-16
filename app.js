@@ -22,7 +22,7 @@ const Vuln = (props) => {
             <div className="d-inline-block" style={{width: "120px"}}>{props.package}</div>
             <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>{props.metadata.NVD.CVSSv3.Score}</div>
             <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>{props.metadata.NVD.CVSSv2.Score}</div>
-            <div className="d-inline-block" style={{width: "150px"}}>{props.installed_version}</div>
+            <div className="d-inline-block" style={{width: "170px"}}>{props.installed_version}</div>
             <div className="d-inline-block" style={{width: "150px"}}>{props.fix_version}</div>
         </div>
     )
@@ -50,7 +50,7 @@ const VulnHeader = (props) => {
                 <div className="d-inline-block" style={{width: "120px"}}>Resource</div>
                 <div className="d-inline-block" style={{width: "110px",textAlign: "center"}}>CVSSv3 <i className="bi bi-sort-down" id="CVSSv3" onClick={handleClick}></i></div>
                 <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>CVSSv2 <i className="bi bi-sort-down" id="CVSSv2" onClick={handleClick}></i></div>
-                <div className="d-inline-block" style={{width: "150px"}}>Installed Version</div>
+                <div className="d-inline-block" style={{width: "170px"}}>Installed Version</div>
                 <div className="d-inline-block" style={{width: "150px"}}>Fix Version</div>
             </div>
         </div>
@@ -85,10 +85,16 @@ const VulnList = (props) => {
     return (
         <>
             <VulnHeader onSort={handleSort} />
-            {   vulns.map((vuln, j) => (
-                <Vuln {...vuln} key={j}/>
-            ))
+
+            {vulns.length > 0 ?
+
+                vulns.map((vuln, j) => (
+                    <Vuln {...vuln} key={j}/>
+                ))
+            :
+                <div className="ml-4 mt-2">No vulnerabilities found</div>
             }
+
         </>
     )
 }
@@ -111,7 +117,7 @@ const Resources = (props) => {
             <div className="ml-4 mt-3 mb-3 packages-head font-weight-bold">
                 <div className="d-inline-block" style={{width: "120px"}}>Resource</div>
                 <div className="d-inline-block" style={{width: "120px"}}>Type</div>
-                <div className="d-inline-block" style={{width: "120px"}}>Version</div>
+                <div className="d-inline-block" style={{width: "180px"}}>Version</div>
                 <div className="d-inline-block text-center" style={{width: "120px"}}>Vulnerabilities</div>
                 <div className="d-inline-block text-center" style={{width: "120px"}}>Risk Summary</div>
             </div>
@@ -121,7 +127,7 @@ const Resources = (props) => {
                     <div className="ml-4 " onClick={() => showResourceInfo(k)}>
                         <div className="d-inline-block" style={{width: "120px"}}><i className="bi bi-play-fill"></i>  {resource.name}</div>
                         <div className="d-inline-block" style={{width: "120px"}}>{resource.type}</div>
-                        <div className="d-inline-block" style={{width: "120px"}}>{resource.installed_version}</div>
+                        <div className="d-inline-block" style={{width: "180px"}}>{resource.installed_version}</div>
                         <div className="d-inline-block text-center" style={{width: "120px"}}>{resource.vulnerabilities.length}</div>
                         <div className="d-inline-block mt-1 mb-1 ">
                             <div className="d-inline-block critical tile mr-1">{resource.severity_counts.Critical}</div>
@@ -178,6 +184,21 @@ const Layers = () => {
         visibleVulnsRow == rowIndex ? setVisibleVulnsRow(0) : setVisibleVulnsRow(rowIndex)
     }
 
+    const openCreatedBy = (index) => {
+        let createdBy = document.getElementById(`createdBy-${index}`);
+        console.log(createdBy)
+        let classes = createdBy.className
+        console.log("CLASSES:", classes)
+        if(classes.includes("d-none")){
+            createdBy.classList.add("d-inline");
+            createdBy.classList.remove("d-none");
+            
+        }else{
+            createdBy.classList.remove("d-inline");
+            createdBy.classList.add("d-none");
+        }
+    }
+
     return (
         <div className="mt-4">
             <h5>Image Layers</h5>
@@ -225,7 +246,10 @@ const Layers = () => {
                                                 </div>
                                             ))}
 
+                                           
+                                            
                                         </div>
+                                        
                                         :
                                         null
 
@@ -233,6 +257,9 @@ const Layers = () => {
 
                                 </div>
                             ))}
+                                <div className="mt-2"><i className="bi bi-play-fill" onClick={() => openCreatedBy(index)}></i>{truncateString(layer.created_by, 55)}</div>
+                                <div id={`createdBy-${index}`} className="d-none mt-6" style={{display: "block",boxDecorationBreak: "clone"}}>{layer.created_by}</div>
+                            
                         </div>
                         :
                         null
@@ -422,6 +449,7 @@ const App = () => {
         }
 
     }
+
 
 
     return (
