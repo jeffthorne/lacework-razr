@@ -20,8 +20,8 @@ const Vuln = (props) => {
             <div className="d-inline-block" style={{width: "140px"}}><a href={props.link} target="_blank">{props.name}</a></div>
             <div className="d-inline-block" style={{width: "120px"}}><Severity color={props.severity}>{props.severity}</Severity></div>
             <div className="d-inline-block" style={{width: "120px"}}>{props.package}</div>
-            <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>{props.metadata.NVD.CVSSv3.Score}</div>
-            <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>{props.metadata.NVD.CVSSv2.Score}</div>
+            <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>{props?.metadata?.NVD?.CVSSv3?.Score}</div>
+            <div className="d-inline-block" style={{width: "110px", textAlign: "center"}}>{props?.metadata?.NVD?.CVSSv2?.Score}</div>
             <div className="d-inline-block" style={{width: "170px"}}>{props.installed_version}</div>
             <div className="d-inline-block" style={{width: "150px"}}>{props.fix_version}</div>
         </div>
