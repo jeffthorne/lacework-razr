@@ -14,6 +14,7 @@ module.exports = {
         path: path.join(__dirname, '.'),
         filename: "lacework-razr.js",
     },
+    devtool: "source-map",
 
     plugins: [],
     module: {

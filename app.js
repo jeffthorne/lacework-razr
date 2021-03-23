@@ -67,9 +67,23 @@ const VulnList = (props) => {
         if(column == "CVSSv3" || column == "CVSSv2") {
 
             if(direction == "desc"){
-                sorted = [...vulns].sort((a, b) => a.metadata.NVD[column].Score < b.metadata.NVD[column].Score ? -1 : 1)
+                sorted = [...vulns].sort((a, b) => {
+                    if(a?.metadata?.NVD[column]?.Score  === undefined){
+                        return -1;
+                    }else{
+                       return  a?.metadata?.NVD[column]?.Score < b?.metadata?.NVD[column]?.Score ? -1 : 1
+                    }
+                }
+                )
             }else{
-                sorted = [...vulns].sort((a, b) => a.metadata.NVD[column].Score < b.metadata.NVD[column].Score ? 1 : -1)
+                sorted = [...vulns].sort((a, b) => {
+                    if(b?.metadata?.NVD[column]?.Score === undefined){
+                        console.log("got a null")
+                        return -1
+                    }else{
+                        return a?.metadata?.NVD[column]?.Score < b?.metadata?.NVD[column]?.Score ? 1 : -1
+                    }
+                })
             }
             setVulns(sorted)
         }else if(column == "Severity"){
@@ -151,8 +165,8 @@ const Resources = (props) => {
                             <div className="ml-4 mt-1 mb1" key={i}>
                                 <div className="d-inline-block ml-4" style={{width: "140px"}}><a href={cve.link} target="_blank">{cve.name}</a></div>
                                 <div className="d-inline-block" style={{width: "120px"}}><Severity color={cve.severity}>{cve.severity}</Severity></div>
-                                <div className="d-inline-block" style={{width: "120px", textAlign: "center"}}>{cve.metadata.NVD.CVSSv3.Score}</div>
-                                <div className="d-inline-block" style={{width: "120px", textAlign: "center"}}>{cve.metadata.NVD.CVSSv2.Score}</div>
+                                <div className="d-inline-block" style={{width: "120px", textAlign: "center"}}>{cve?.metadata?.NVD?.CVSSv3?.Score}</div>
+                                <div className="d-inline-block" style={{width: "120px", textAlign: "center"}}>{cve?.metadata?.NVD?.CVSSv2?.Score}</div>
                                 <div className="d-inline-block" style={{width: "120px"}}>{cve.fix_version}</div>
                             </div>
                         ))}
