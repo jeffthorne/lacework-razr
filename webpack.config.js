@@ -12,7 +12,7 @@ module.exports = {
 
     output: {
         path: path.join(__dirname, '.'),
-        filename: "pumpkin.js",
+        filename: "lacework-razr.js",
     },
     devtool: "source-map",
 
